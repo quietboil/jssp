@@ -1,6 +1,6 @@
 # JSON-to-Struct Streaming Parser
 
-**jssp** is a C library for parsing JSON. It's a complementary project to [**jspp**](/quietboil/jspp). It rides on top of _jspp_ and provides a semi-automatic way to extract required data from JSON.
+**jssp** is a C library for parsing JSON. It's a complementary project to [**jspp**](https://github.com/quietboil/jspp). It rides on top of _jspp_ and provides a semi-automatic way to extract required data from JSON.
 
 ## Motivation
 
@@ -21,7 +21,7 @@ Mainly though **jssp** is designed to offer:
 
 ## Installation
 
-**jssp** depends on [**jspp**](/quietboil/jspp) which would need to be instaleld first. At the moment, once _jspp_ has been installed, the easiest way to install **jssp** is to make it a sibling project to _jspp_. For example, to install both you might execute these commands:
+**jssp** depends on [**jspp**](https://github.com/quietboil/jspp) which would need to be instaleld first. At the moment, once _jspp_ has been installed, the easiest way to install **jssp** is to make it a sibling project to _jspp_. For example, to install both you might execute these commands:
 ```sh
 $ git clone https://github.com/quietboil/jspp
 $ git clone https://github.com/quietboil/jssp
