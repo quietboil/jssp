@@ -61,40 +61,37 @@ uint32_t hello_world_name_next_state(uint32_t state, char next_char)
     return 0;
 }
 
-uint32_t hello_world_next_path_state(uint32_t state, uint8_t next_elem, data_cb_t * action)
+static inline uint32_t object_data(uint8_t json_token, uint32_t current_state, uint32_t next_state, data_cb_t * action_ptr, data_cb_t action_cb) {
+    if (json_token == JSON_NUMBER_PART || json_token == JSON_STRING_PART) {
+        *action_ptr = action_cb;
+        return current_state;
+    } else if (JSON_NULL <= json_token && json_token <= JSON_STRING) {
+        *action_ptr = action_cb;
+        return next_state;
+    }
+    return 0;
+}
+
+uint32_t hello_world_path_next_state(uint32_t state, uint8_t next_elem, data_cb_t * action)
 {
     switch (state) {
-        case 0: {
-            if (next_elem == JSON_OBJECT_BEGIN) return 1;
-            break;
-        }
         case 1: {
-            switch (next_elem) {
-                case ACTION: return 2;
-                case TARGET: return 3;
-                case JSON_OBJECT_END: return UINT32_MAX;
-            }
+            if (next_elem == JSON_OBJECT_BEGIN) return 2;
             break;
         }
         case 2: {
-            if (next_elem == JSON_NUMBER_PART || next_elem == JSON_STRING_PART) {
-                *action = hello_world_set_action;
-                return 2;
-            } else if (JSON_NULL <= next_elem && next_elem <= JSON_STRING) {
-                *action = hello_world_set_action;
-                return 1;
+            switch (next_elem) {
+                case ACTION: return 3;
+                case TARGET: return 4;
+                case JSON_OBJECT_END: return 1;
             }
             break;
         }
         case 3: {
-            if (next_elem == JSON_NUMBER_PART || next_elem == JSON_STRING_PART) {
-                *action = hello_world_set_target;
-                return 3;
-            } else if (JSON_NULL <= next_elem && next_elem <= JSON_STRING) {
-                *action = hello_world_set_target;
-                return 1;
-            }
-            break;
+            return object_data(next_elem, 3, 2, action, hello_world_set_action);
+        }
+        case 4: {
+            return object_data(next_elem, 4, 2, action, hello_world_set_target);
         }        
     }
     return 0;

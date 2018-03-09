@@ -1,5 +1,4 @@
 #include "jssp.h"
-#include <stddef.h>
 
 static inline void jssp_context_init(jssp_context_t * context, void * result)
 {
@@ -102,7 +101,7 @@ static uint8_t jssp_parse(jssp_t * parser, uint8_t token)
 
 uint8_t jssp_start(jssp_t * parser, void * result, const char * json_text, uint16_t text_length)
 {
-    parser->path_matcher_state = 0;
+    parser->path_matcher_state = 1;
     parser->name_scanner_state = 1;
     jssp_context_init(&parser->context, result);
 

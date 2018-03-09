@@ -1,19 +1,30 @@
 -include config.mk
 
-JSSPDIR = $(realpath $(dir $(CURDIR)))
-JSPPDIR = $(realpath $(dir $(JSSPDIR))/jspp)
+JSSPDIR  := $(realpath $(dir $(CURDIR)))
+JSPPDIR  := $(realpath $(dir $(JSSPDIR))/jspp)
+JSSPCDIR := $(realpath $(JSSPDIR)/jsspc)
+ifdef SystemDrive
+	EXE := .exe
+endif
+JSSPC    := $(JSSPCDIR)/jsspc$(EXE)
 
-CFLAGS 	?= -g -O2 -I $(CURDIR) -I $(JSSPDIR) -I $(JSPPDIR)
+CFLAGS 	+= -I $(JSSPDIR) -I $(JSPPDIR) -g
 LDFLAGS ?= -L $(JSSPDIR) -L $(JSPPDIR)
 
-TESTS = $(filter-out test.c tests.c,$(wildcard *.c))
-TESTOBJS = $(patsubst %.c,%.o,$(TESTS))
-TESTHDRS = $(patsubst %.c,%.h,$(TESTS))
+TESTSPECS  := $(wildcard *.json)
+JSSPCTESTS := $(patsubst %.json,%.c,$(TESTSPECS))
+TESTS       = $(filter-out test.c tests.c,$(wildcard *.c)) $(JSSPCTESTS)
+TESTOBJS    = $(patsubst %.c,%.o,$(TESTS))
+TESTHDRS    = $(patsubst %.c,%.h,$(TESTS))
+TESTRUNNER := tests$(EXE)
 
-all: tests $(JSSPDIR)/libjssp.a $(JSPPDIR)/libjspp.a
+all: $(TESTRUNNER) $(JSSPDIR)/libjssp.a $(JSPPDIR)/libjspp.a
 
-%.o: %.c %.h
-	$(CC) $(CFLAGS) $(filter %.c,$^) -c -o $@
+$(TESTRUNNER): $(TESTOBJS) test.o tests.o $(JSSPDIR)/libjssp.a $(JSPPDIR)/libjspp.a
+	$(CC) $(LDFLAGS) $(filter %.o,$^) -ljssp -ljspp -o $@
+
+%.c: $(JSSPC) %.json
+	$(JSSPC) $(filter %.json,$^)
 
 $(JSSPDIR)/libjssp.a:
 	$(MAKE) -C $(JSSPDIR)
@@ -21,10 +32,10 @@ $(JSSPDIR)/libjssp.a:
 $(JSPPDIR)/libjspp.a:
 	$(MAKE) -C $(JSPPDIR)
 
-tests.o: tests.c
-
-tests: tests.o test.o $(TESTOBJS) $(TESTHDRS) $(JSSPDIR)/libjssp.a $(JSPPDIR)/libjspp.a
-	$(CC) $(LDFLAGS) $(filter %.c %.o,$^) -ljssp -ljspp -o $@
+$(JSSPC):
+	$(MAKE) -C $(JSSPCDIR)
 
 clean:
-	$(RM) *.o tests *.exe
+	$(RM) *.o $(JSSPCTESTS) $(patsubst %.c,%.h,$(JSSPCTESTS)) $(TESTRUNNER)
+
+.SECONDARY: $(JSSPCTESTS)

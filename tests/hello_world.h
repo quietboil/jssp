@@ -4,7 +4,7 @@
 #include <jssp.h>
 
 uint32_t hello_world_name_next_state(uint32_t state, char next_char);
-uint32_t hello_world_next_path_state(uint32_t state, uint8_t next_elem, data_cb_t * action);
+uint32_t hello_world_path_next_state(uint32_t state, uint8_t next_elem, data_cb_t * action);
 
 enum _hello_world_names {
     ACTION = JSON_ARRAY_END + 1,
