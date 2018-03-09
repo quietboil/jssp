@@ -19,7 +19,7 @@ Mainly though **jssp** is designed to offer:
 
 ## Installation
 
-**jssp** depends on [**jspp**](https://github.com/quietboil/jspp) which would need to be instaleld first. At the moment, once _jspp_ has been installed, the easiest way to install **jssp** is to make it a sibling project to _jspp_. For example, to install both you might execute these commands:
+**jssp** depends on [**jspp**](https://github.com/quietboil/jspp) which would need to be installed first. At the moment, once _jspp_ has been installed, the easiest way to install **jssp** is to make it a sibling project to _jspp_. For example, to install both you might execute these commands:
 ```sh
 $ git clone https://github.com/quietboil/jspp
 $ git clone https://github.com/quietboil/jssp
@@ -162,6 +162,9 @@ void process_hello_world_response(const char * content, size_t content_length)
 
     // reset fragment No to indicate that this is a new request
     fragment_no = 0;
+    // and prepare the `result` structure
+    hello_world_result_init(&result);
+
     http_get("http://example.net/task?client=123", process_hello_world_response);
 }
 ```
