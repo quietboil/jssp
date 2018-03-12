@@ -1,4 +1,5 @@
 #include "jssp.h"
+#include <stdlib.h>
 
 static inline void jssp_context_init(jssp_context_t * context, void * result)
 {

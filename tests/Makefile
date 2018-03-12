@@ -11,11 +11,10 @@ JSSPC    := $(JSSPCDIR)/jsspc$(EXE)
 CFLAGS 	+= -I $(JSSPDIR) -I $(JSPPDIR) -g
 LDFLAGS ?= -L $(JSSPDIR) -L $(JSPPDIR)
 
-TESTSPECS  := $(wildcard *.json)
-JSSPCTESTS := $(patsubst %.json,%.c,$(TESTSPECS))
-TESTS       = $(filter-out test.c tests.c,$(wildcard *.c)) $(JSSPCTESTS)
-TESTOBJS    = $(patsubst %.c,%.o,$(TESTS))
-TESTHDRS    = $(patsubst %.c,%.h,$(TESTS))
+JSONSPECS  := $(patsubst %.json,%.c,$(wildcard *.json))
+TESTSPECS  := $(JSONSPECS) hello_world.c
+TESTCASES  := $(wildcard test_*.c)
+TESTOBJS   := $(patsubst %.c,%.o,$(TESTSPECS) $(TESTCASES))
 TESTRUNNER := tests$(EXE)
 
 all: $(TESTRUNNER) $(JSSPDIR)/libjssp.a $(JSPPDIR)/libjspp.a
@@ -36,6 +35,6 @@ $(JSSPC):
 	$(MAKE) -C $(JSSPCDIR)
 
 clean:
-	$(RM) *.o $(JSSPCTESTS) $(patsubst %.c,%.h,$(JSSPCTESTS)) $(TESTRUNNER)
+	$(RM) *.o $(JSONSPECS) $(patsubst %.c,%.h,$(JSONSPECS)) $(TESTRUNNER)
 
 .SECONDARY: $(JSSPCTESTS)
