@@ -17,7 +17,7 @@ TESTCASES  := $(wildcard test_*.c)
 TESTOBJS   := $(patsubst %.c,%.o,$(TESTSPECS) $(TESTCASES))
 TESTRUNNER := tests$(EXE)
 
-all: $(TESTRUNNER) $(JSSPDIR)/libjssp.a $(JSPPDIR)/libjspp.a
+all: $(TESTRUNNER)
 
 $(TESTRUNNER): $(TESTOBJS) test.o tests.o $(JSSPDIR)/libjssp.a $(JSPPDIR)/libjspp.a
 	$(CC) $(LDFLAGS) $(filter %.o,$^) -ljssp -ljspp -o $@

@@ -2,15 +2,10 @@
 
 JSPPDIR := $(realpath $(CURDIR)/../jspp)
 
-ifdef SystemDrive
-	EXE := .exe
-endif
-JSSPC := jsspc/jsspc$(EXE)
+CFLAGS 	?= -O2
+CFLAGS 	+= -I $(JSPPDIR)
 
-CFLAGS 	+= -I $(JSPPDIR) -O2
-LDFLAGS ?= -L $(JSPPDIR)
-
-all: libjssp.a $(JSSPC)
+all: libjssp.a
 
 libjssp.a: jssp.o
 	$(AR) rc $@ $^
@@ -18,10 +13,5 @@ libjssp.a: jssp.o
 jssp.o: jssp.c jssp.h
 	$(CC) -c $(CFLAGS) $(filter %.c,$^) -o $@
 
-$(JSSPC):
-	$(MAKE) -C jsspc
-
 clean:
-	$(MAKE) -C jsspc clean
-	$(MAKE) -C tests clean
 	$(RM) *.o *.a

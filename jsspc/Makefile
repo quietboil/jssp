@@ -7,8 +7,9 @@ ifdef SystemDrive
 endif
 JSSPC := jsspc$(EXE)
 
-CFLAGS 	+= -I $(JSPPDIR) -O2
-LDFLAGS ?= -L $(JSPPDIR)
+CFLAGS 	?= -O2
+CFLAGS 	+= -I $(JSPPDIR)
+LDFLAGS += -L $(JSPPDIR)
 
 SRC := $(wildcard *.c)
 OBJ := $(patsubst %.c,%.o,$(SRC))

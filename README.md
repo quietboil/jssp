@@ -28,10 +28,17 @@ Then change the current directory to `jssp` and execute `make` to build the libr
 
 > **Note:** if you are crosscompiling, create `config.mk` script and define the target compiler - `CC`, `CFLAGS`, `AR` - in that file.
 
-`make` creates 2 targets - the **jssp** run-time library `libjssp.a` and the state machines compiler `jsspc`. The former can be found in the root of the project directory and the latter in the `jsspc` subdirectory. You can either reference the files you need from this project directly by adding appropriate `-I` and `-L` options or copy/move the following files to appropriate directories:
+You can either reference the files you need from this project directly by adding appropriate `-I` and `-L` options or copy/move the following files to appropriate directories:
 - `jssp.h` to an `include` directory,
 - `libjssp.a` to a `lib` directory, and
-- `jsspc` (from the `jsspc` subdirectory) to a `bin` directory.
+
+`libjssp.a` provides a run-time component of the **jssp**. To generate state machines for JSON parsing you also need specification compiler. To build it execute the following commands:
+```sh
+$ make -C jsspc
+```
+This will build the JSON specification compiler - `jsspc`.
+
+> **Note** that if you crosscompiled the libraries, before you build the compiler you would need to ensure that *jspp*, which is used by the `jsspc` compiler, can be compiled for the host platform, i.e. remove/update `config.mk` if it exists in *jspp* project and execute `make clean` to remove `libjspp.a` compiled for a non-host target.
 
 ## Example
 
@@ -241,5 +248,7 @@ $ make
 
 This will build a single executable that contains all unit tests. To run them execute:
 ```sh
-tests
+$ ./tests
 ```
+
+> **Note** that if you were crosscompiling the libraries, before you make unit tests you have to run `make clean` for both **jspp** and **jssp** and set them up for host compilation (remove/update `config.mk`)

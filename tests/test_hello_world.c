@@ -1,12 +1,8 @@
 #include "test.h"
+#include "utils.h"
 #include "hello_world.h"
 #include <string.h>
 #include <stdio.h>
-
-static inline size_t min(size_t s1, size_t s2)
-{
-    return s1 <= s2 ? s1 : s2;
-}
 
 /**
  * Structure to store data extracted from the "Hello, World" JSON.
