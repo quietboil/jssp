@@ -87,9 +87,6 @@ int main(int argc, char * argv[])
     uint32_t  last_name_id = JSON_ARRAY_END;
 
     path_state_t * path_end_state = path_state_create(0); // 0 is a temporaty number for this state
-    // path_state_t * path_off_state = path_state_create(0); // a virtual state to encode goto for JSON_END match
-    // path_state_add_goto_on_match(path_end_state, JSON_END, path_off_state);
-
     path_state_t * path_start_state = path_state_create(1);
     uint32_t  last_path_state_no = 1;
 
@@ -115,14 +112,21 @@ int main(int argc, char * argv[])
             }
             case JSON_OBJECT_END: {
                 path_state_t * curr_state = state_stack_pop(&path_state_stack); // after this pop it is at the state that matched {
-                path_state_t * next_state = state_stack_pop_and_peek(&path_state_stack); // now it is at the state that parses parent container
+                path_state_t * next_state = state_stack_peek(&path_state_stack);
+                if (next_state->type != MATCH_ARRAY_ELEMENT) {
+                    next_state = state_stack_pop_and_peek(&path_state_stack);
+                }
                 path_state_add_goto_on_match(curr_state, t, next_state);
                 break;
             }
             case JSON_ARRAY_END: {
-                path_state_t * next_state = state_stack_pop_and_peek(&path_state_stack);
+                path_state_t * curr_state = state_stack_pop(&path_state_stack); // after this pop it is at the state that matched {
+                path_state_t * next_state = state_stack_peek(&path_state_stack);
                 if (next_state->type != MATCH_ARRAY_ELEMENT) {
-                    state_stack_pop(&path_state_stack);
+                    next_state = state_stack_pop_and_peek(&path_state_stack);
+                }
+                if (curr_state->type == MATCH_ARRAY_ELEMENT) {
+                    path_state_add_goto_on_match(curr_state, t, next_state);
                 }
                 break;
             }
@@ -162,7 +166,6 @@ int main(int argc, char * argv[])
         t = jspp_next(&parser);
     }
     path_end_state->no = ++last_path_state_no;
-    // path_off_state->no = ++last_path_state_no;
 
     write_automata(argv[1], name_start_state, path_start_state);
 

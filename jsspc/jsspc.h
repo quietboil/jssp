@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 /**
  * List of state struct variants
@@ -103,13 +104,13 @@ path_state_t * path_state_add_goto_on_match(path_state_t * state, uint8_t match,
  * Prints on stdout the representation of states of the path mathing automaton.
  * \param  state  Starting state.
  */
-void path_state_dump(path_state_t * state);
+void path_state_dump(FILE * out, path_state_t * state);
 
 /**
  * Prints on stdout the representation of states of the object member names mathing automaton.
  * \param  state  Starting state.
  */
-void name_state_dump(name_state_t * state);
+void name_state_dump(FILE * out, name_state_t * state);
 
 /**
  * Reads the file content into the heap allocated emory block.

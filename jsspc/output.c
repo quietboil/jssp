@@ -184,9 +184,9 @@ void write_automata(char * spec_file_name, name_state_t * name_start_state, path
     size_t spec_root_name_len = spec_rootname_end - spec_file_name;
 
     // Generate .h file name (we start with .h)
-    char * output_file_name = alloca(spec_root_name_len + 3);
+    char * output_file_name = alloca(spec_root_name_len + 4);
     strncpy(output_file_name, spec_file_name, spec_root_name_len);
-    strcpy(output_file_name + spec_root_name_len, ".h");
+    output_file_name[spec_root_name_len] = '\0'; // terminate the partial name so that str functions can use it
 
     // Find the "name" of the specification in the file name.
     // It will be used as a "namespace" of sorts.
@@ -216,8 +216,24 @@ void write_automata(char * spec_file_name, name_state_t * name_start_state, path
     lowercase_prefix[spec_name_len] = '\0';
     uppercase_prefix[spec_name_len] = '\0';
 
+    FILE * out;
+    // strcpy(output_file_name + spec_root_name_len, ".pd");
+    // out = fopen(output_file_name, "w");
+    // if (out) {
+    //     path_state_dump(out, path_start_state);
+    //     fclose(out);
+    // }
+
+    // strcpy(output_file_name + spec_root_name_len, ".nd");
+    // out = fopen(output_file_name, "w");
+    // if (out) {
+    //     name_state_dump(out, name_start_state);
+    //     fclose(out);
+    // }
+
     // Generate sources, starting with .h
-    FILE * out = fopen(output_file_name, "w");
+    strcpy(output_file_name + spec_root_name_len, ".h");
+    out = fopen(output_file_name, "w");
     if (out) {
         fprintf(out, "#ifndef __%s_H\n", uppercase_prefix);
         fprintf(out, "#define __%s_H\n\n", uppercase_prefix);

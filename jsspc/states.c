@@ -68,6 +68,10 @@ name_state_t * build_name_matcher(name_state_t * state, uint32_t * state_no_gen,
         state = next_state;
         ++name;
     }
+    if (state->no >= 256) {
+        // this name is a substring of a longer one that is already matched
+        state->no = ++*name_id_gen;
+    }
     return state;
 }
 

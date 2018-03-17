@@ -25,7 +25,7 @@ static inline void embedded_array_result_init(embedded_array_result_t * result)
     }
 }
 
-///< Helper function to convert a sequence of numeric hcracters into an integer
+///< Helper function to convert a sequence of numeric characters into an integer
 static uint8_t add(uint8_t val, const char * data, uint16_t data_length)
 {
     const char * end = data + data_length;
