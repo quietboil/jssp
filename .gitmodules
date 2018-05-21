@@ -1,0 +1,3 @@
+[submodule "deps/jspp"]
+	path = deps/jspp
+	url = https://github.com/quietboil/jspp
