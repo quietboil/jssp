@@ -19,18 +19,17 @@ Mainly though **jssp** is designed to offer:
 
 ## Installation
 
-**jssp** depends on [**jspp**](https://github.com/quietboil/jspp) which would need to be installed first. At the moment, once _jspp_ has been installed, the easiest way to install **jssp** is to make it a sibling project to _jspp_. For example, to install both you might execute these commands:
+**jssp** depends on [**jspp**](https://github.com/quietboil/jspp) which is used as a submodule in this project. The easiest way to install **jssp** therefore is to make clone its repository recursively:
 ```sh
-$ git clone https://github.com/quietboil/jspp
-$ git clone https://github.com/quietboil/jssp
+$ git clone --recursive https://github.com/quietboil/jssp
 ```
 Then change the current directory to `jssp` and execute `make` to build the library.
 
 > **Note:** if you are crosscompiling, create `config.mk` script and define the target compiler - `CC`, `CFLAGS`, `AR` - in that file.
 
 You can either reference the files you need from this project directly by adding appropriate `-I` and `-L` options or copy/move the following files to appropriate directories:
-- `jssp.h` to an `include` directory,
-- `libjssp.a` to a `lib` directory, and
+- `jssp.h` to an `include` directory and
+- `libjssp.a` to a `lib` directory
 
 `libjssp.a` provides a run-time component of the **jssp**. To generate state machines for JSON parsing you also need specification compiler. To build it execute the following commands:
 ```sh
@@ -38,7 +37,7 @@ $ make -C jsspc
 ```
 This will build the JSON specification compiler - `jsspc`.
 
-> **Note** that if you crosscompiled the libraries, before you build the compiler you would need to ensure that *jspp*, which is used by the `jsspc` compiler, can be compiled for the host platform, i.e. remove/update `config.mk` if it exists in *jspp* project and execute `make clean` to remove `libjspp.a` compiled for a non-host target.
+> **Note** that if you crosscompiled the libraries, before you build the compiler you would need to ensure that *jspp*, which is used by the `jsspc` compiler, can be compiled for the **host** platform, i.e. remove/update `config.mk` if it exists in *jspp* project and execute `make clean` to remove `libjspp.a` compiled for a non-host target.
 
 ## Example
 

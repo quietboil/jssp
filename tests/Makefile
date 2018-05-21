@@ -1,8 +1,8 @@
 -include config.mk
 
-JSSPDIR  := $(realpath $(dir $(CURDIR)))
-JSPPDIR  := $(realpath $(dir $(JSSPDIR))/jspp)
-JSSPCDIR := $(realpath $(JSSPDIR)/jsspc)
+JSSPDIR  := $(realpath ..)
+JSPPDIR  := $(realpath ../deps/jspp)
+JSSPCDIR := $(realpath ../jsspc)
 ifdef SystemDrive
 	EXE := .exe
 endif

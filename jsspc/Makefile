@@ -1,14 +1,14 @@
 -include config.mk
 
-JSPPDIR := $(realpath $(CURDIR)/../../jspp)
+JSPPDIR := $(realpath ../deps/jspp)
 
 ifdef SystemDrive
 	EXE := .exe
 endif
 JSSPC := jsspc$(EXE)
 
-CFLAGS 	?= -O2
-CFLAGS 	+= -I $(JSPPDIR)
+CFLAGS  ?= -O2
+CFLAGS  += -I $(JSPPDIR)
 LDFLAGS += -L $(JSPPDIR)
 
 SRC := $(wildcard *.c)
